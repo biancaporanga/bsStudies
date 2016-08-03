@@ -14,7 +14,7 @@
     		$GLOBALS['y'] = $GLOBALS['x'] + $GLOBALS['y'];
 		} 
 		myTest();
-		echo $y; // outputs 15
+		echo $y;
 
 		print "<h2>PHP is Fun!</h2>";
 		print "Hello world!<br>";
@@ -26,9 +26,21 @@
 		var_dump($x);
 		$cars = array("Volvo","BMW","Toyota");
 		$i;
-		//for(i=0;i<3;i++){
+		foreach($colors as $value){
 			echo "$cars";
-		//}
-	?>
+		}
+		echo strlen("Hello World!");
+		echo strrev("Hello World!");
+		echo strops("Hello World!");
+		//define("msg", "Olá!", true);
+		//echo msg;
+
+		$t = date("H");
+		if ($t < "20") {
+    		echo "Have a good day!";
+		} else{
+			echo "Have a good night!";
+		}
+		?>
 </body>
 </html>
