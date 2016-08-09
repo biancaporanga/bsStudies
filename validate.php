@@ -11,11 +11,11 @@
 		if($_SERVER["REQUEST_METHOD"] == "POST"){
 			$nome = teste_input($_POST["nome"]);
 			$email = teste_input($_POST["email"]);
-			/*if(empty($_POST["email"]){
+			if(empty($_POST["email"]){
 			$emailErro = "E-mail necessário.";
 			}
 			else if(empty($_POST["nome"]){
-				$nomeErro = "Nome necessário.";*/
+				$nomeErro = "Nome necessário.";
 			}
 		}
 

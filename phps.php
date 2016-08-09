@@ -5,6 +5,9 @@
 	</head>
 	<body>
 		<?php
+			ini_set('display_errors', 1);
+			ini_set('display_startup_errors', 1);
+			error_reporting(E_ALL);
 			/*$txt = "Hello World!";
 			$txt2 = "Bianca";
 			echo "$txt $txt2";
@@ -45,13 +48,13 @@
 				echo "Hello World!<br>";
 			}
 			msg();
-			function sobrenome($prnome){
+			function  sobrenome($prnome){
 				echo "$prnome Poranga<br>";
 			}
-			sobrenome(Bianca);
-			sobrenome(Elaine);
-			sobrenome(Carlos);
-			sobrenome(Fatima);
+			sobrenome("Bianca");
+			sobrenome("Elaine");
+			sobrenome("Carlos");
+			sobrenome("Fatima");
 
 			$cores = array("vermelho","azul","amarelo");
 			foreach ($cores as $valor) {
@@ -65,6 +68,47 @@
 			echo count($cores) . "<br>";
 			$idade = array("Leandro" => "23", "Bianca" => "19","Paulo" => "13");
 			echo "Leandro tem " . $idade['Leandro'] . " anos<br>";
+
+			//UPLOAD FORM
+			$target_dir = "/uploads";
+			$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+			$uploadOk = 1;
+			$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+			if(isset($_POST["submit"])){
+				$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+				if(check !== false){
+					echo "O arquivo é uma imagem - " . $check["mime"] . ".";
+					$uploadOk = 1;
+				}
+				else{
+					echo "O arquivo não é uma imagem";
+					$uploadOk = 0;
+				}
+				if (file_exists($target_file)) {
+					echo "Desculpe, arquivo já existente :(";
+					$uploadOk= 0;
+				}
+				if ($_FILES["fileToUpload"]["size"] > 500000) {
+		    		echo "Desculpe, seu arquivo é muito grande :O";
+		    		$uploadOk = 0;
+	    		}
+	    		if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ){
+					echo "Desculpe, apenas JPG, JPEG, PNG e GIF são permitidos.";
+					$uploadOk = 0;
+				}
+				if ($uploadOk == 0) {
+	    			echo "Sorry, seu arquivo não foi carregado.";
+				// if everything is ok, try to upload file
+				} else {
+	    			if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+	        			echo "O arquivo ". basename( $_FILES["fileToUpload"]["name"]). " foi carregado.";
+	    			} else {
+	    			    echo "Desculpe, ocorreu um erro.";
+	    			}
+				}
+			}
+			echo $_FILES["fileToUpload"]["tmp_name"];
+			print_r($_FILES['fileToUpload']);
 		?>
 
 		<form action="<?php echo "$_POST[nome]"?>" method="post">
@@ -111,47 +155,7 @@
 		fclose($myfile);
 		?>
 		<br><br>
-		<form action="
-		<?php
-			$target_dir = "/uploads";
-			$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-			$uploadOk = 1;
-			$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-			if(isset($_POST["submit"])){
-				$check = getimagesize($_POST["fileToUpload"]["name"]);
-				if(check !== false){
-					echo "O arquivo é uma imagem - " . $check["mime"] . ".";
-					$uploadOk = 1;
-				}
-				else{
-					echo "O arquivo não é uma imagem";
-					$uploadOk = 0;
-				}
-			}
-			if (file_exists($target_file)) {
-				echo "Desculpe, arquivo já existente :(";
-				$uploadOk= 0;
-			}
-			if ($_FILES["fileToUpload"]["size"] > 500000) {
-	    		echo "Desculpe, seu arquivo é muito grande :O";
-	    		$uploadOk = 0;
-    		}
-    		if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ){
-				echo "Desculpe, apenas JPG, JPEG, PNG e GIF são permitidos.";
-				$uploadOk = 0;
-			}
-			if ($uploadOk == 0) {
-    			echo "Sorry, your file was not uploaded.";
-			// if everything is ok, try to upload file
-			} else {
-    			if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-        			echo "O arquivo ". basename( $_FILES["fileToUpload"]["name"]). " foi carregado.";
-    			} else {
-    			    echo "Desculpe, ocorreu um erro.";
-    			}
-			}
-		?>
-		" method="post" enctype="multipart/form-data">
+		<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
 	    	<label>Selecione a imagem:<br></label>
 		    <input type="file" name="fileToUpload" id="fileToUpload">
 		    <input type="submit" value="Enviar" name="submit">
