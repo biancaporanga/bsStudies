@@ -24,10 +24,10 @@
 			echo "I'm about to learn PHP!";
 			$x = 10.365;
 			var_dump($x);
-			$cars = array("Volvo","BMW","Toyota");
+			$carros = array("Volvo","BMW","Toyota");
 			$i;
 			foreach($colors as $value){
-				echo "$cars";
+				echo "$carros";
 			}
 			echo strlen("Hello World!");
 			echo strrev("Hello World!");
@@ -71,19 +71,90 @@
 			Nome: <input type="text" name="nome"><br>
 			E-mail: <input type="text" name="email"><br>
 			<input type="submit">
-			<!--Pode ser declarado o método na linha ou de um arquivo .php-->
+			<!--Pode ser declarado o método na lin ou de um arquivo .php-->
 		</form>
 		<form action="validate.php" method="post">
 			Nome: <input type="text" name="nome"><br>
 			E-mail: <input type="text" name="email"><br>
 			<input type="submit">
-			<!--Pode ser declarado o método na linha ou de um arquivo .php-->
+			<!--Pode ser declarado o método na lin ou de um arquivo .php-->
 		</form>
 		<?php
 			echo "Hoje é " . date("d/m/Y") . "<br>";
 			echo "Hoje é " . date("d.m.Y") . "<br>";
 			echo "Hoje é " . date("d-m-Y") . "<br>";
-			echo "Hoje é " . date("l");
+			echo "Hoje é " . date("l<br><br>");
+
+		/*$carros = array(
+			array("Volvo",22,18);
+			array("BMW",15,13);
+			array("Saab",5,2);
+			array("Land Rover",17,15);
+		)
+		for ($lin = 0; $lin < 4; $lin++) {
+	  		echo "<p><b>Número de linhas $lin</b></p>";
+	  		echo "<ul>";
+	  		for ($col = 0; $col < 3; $col++) {
+	    		echo "<li>".$carros[$lin][$col]."</li>";
+	  		}
+	  		echo "</ul>";
+		}*/
+		$myfile = fopen("oi.txt", "r") or die("Não foi possível abrir o arquivo.");
+		echo fread($myfile,filesize("oi.txt"));
+		fclose($myfile);
+
+		$myfile = fopen("newfile.txt", "w") or die("Não foi possível abrir o arquivo.");
+		$txt = "Mickey Mouse\n";
+		fwrite($myfile, $txt);
+		$txt = "Minnie Mouse\n";
+		fwrite($myfile, $txt);
+		fclose($myfile);
 		?>
+		<br><br>
+		<form action="
+		<?php
+			$target_dir = "/uploads";
+			$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+			$uploadOk = 1;
+			$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+			if(isset($_POST["submit"])){
+				$check = getimagesize($_POST["fileToUpload"]["name"]);
+				if(check !== false){
+					echo "O arquivo é uma imagem - " . $check["mime"] . ".";
+					$uploadOk = 1;
+				}
+				else{
+					echo "O arquivo não é uma imagem";
+					$uploadOk = 0;
+				}
+			}
+			if (file_exists($target_file)) {
+				echo "Desculpe, arquivo já existente :(";
+				$uploadOk= 0;
+			}
+			if ($_FILES["fileToUpload"]["size"] > 500000) {
+	    		echo "Desculpe, seu arquivo é muito grande :O";
+	    		$uploadOk = 0;
+    		}
+    		if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ){
+				echo "Desculpe, apenas JPG, JPEG, PNG e GIF são permitidos.";
+				$uploadOk = 0;
+			}
+			if ($uploadOk == 0) {
+    			echo "Sorry, your file was not uploaded.";
+			// if everything is ok, try to upload file
+			} else {
+    			if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        			echo "O arquivo ". basename( $_FILES["fileToUpload"]["name"]). " foi carregado.";
+    			} else {
+    			    echo "Desculpe, ocorreu um erro.";
+    			}
+			}
+		?>
+		" method="post" enctype="multipart/form-data">
+	    	<label>Selecione a imagem:<br></label>
+		    <input type="file" name="fileToUpload" id="fileToUpload">
+		    <input type="submit" value="Enviar" name="submit">
+		</form>
 	</body>
 </html>
